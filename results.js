@@ -23,8 +23,11 @@ const adminTokenInput = document.querySelector("#admin-token");
 
 let currentRows = [];
 
+const fallbackGoogleScriptUrl =
+  "https://script.google.com/macros/s/AKfycbxnAOxQu11wf_2jYezYkSr-8zQXPh9I746RdZoK59wz4zvJXpJlofKVtquMZhELfEdG/exec";
+
 function getGoogleScriptUrl() {
-  return window.SURVEY_CONFIG?.googleScriptUrl?.trim() ?? "";
+  return window.SURVEY_CONFIG?.googleScriptUrl?.trim() || fallbackGoogleScriptUrl;
 }
 
 function callSheetApi(action, payload = {}) {

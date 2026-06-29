@@ -45,6 +45,9 @@ const scaleOptions = [
   { value: 5, label: "強くそう思う" },
 ];
 
+const fallbackGoogleScriptUrl =
+  "https://script.google.com/macros/s/AKfycbxnAOxQu11wf_2jYezYkSr-8zQXPh9I746RdZoK59wz4zvJXpJlofKVtquMZhELfEdG/exec";
+
 const creatorText = {
   human: "人間のイラストレーターが制作したイラストです",
   ai: "画像生成AIによって制作されたイラストです",
@@ -76,7 +79,7 @@ let currentIndex = 0;
 let responses = {};
 
 function getGoogleScriptUrl() {
-  return window.SURVEY_CONFIG?.googleScriptUrl?.trim() ?? "";
+  return window.SURVEY_CONFIG?.googleScriptUrl?.trim() || fallbackGoogleScriptUrl;
 }
 
 function callSheetApi(action, payload = {}) {

@@ -119,8 +119,8 @@ function validateParticipant_(participant) {
   const participantName = String((participant && participant.name) || "").trim();
   const group = String((participant && participant.group) || "");
 
-  if (!participantId || participantId < 1 || participantId > 30) {
-    throw new Error("番号は1〜30から選択してください。");
+  if (!participantId || participantId < 1 || participantId > 20) {
+    throw new Error("番号は1〜20から選択してください。");
   }
   if (!participantName) {
     throw new Error("名前を入力してください。");

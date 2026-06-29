@@ -150,10 +150,10 @@ function startSurvey_(payload) {
   const status = getStatus_();
 
   if (status.usedIds.includes(participant.id)) {
-    throw new Error("この番号はすでに回答済みです。別の番号を選択してください。");
+    throw new Error("この番号は回答済みです。別の番号を選択してください。");
   }
   if (status.usedNames.some(name => normalizeName_(name) === participant.normalizedName)) {
-    throw new Error("この名前はすでに回答済みです。");
+    throw new Error("回答済みです。");
   }
 
   const startToken = Utilities.getUuid();
@@ -187,12 +187,12 @@ function submitSurvey_(payload) {
 
   const status = getStatus_();
   if (status.usedIds.includes(participant.id)) {
-    throw new Error("この番号はすでに回答済みです。別の番号を選択してください。");
+    throw new Error("この番号は回答済みです。別の番号を選択してください。");
   }
 
   const responseRows = getRows_(SHEET_RESPONSES);
   if (responseRows.some(row => normalizeName_(row.participantName) === participant.normalizedName)) {
-    throw new Error("この名前はすでに回答済みです。");
+    throw new Error("回答済みです。");
   }
 
   if (rows.length !== 4) {

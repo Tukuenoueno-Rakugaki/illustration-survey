@@ -142,7 +142,7 @@ async function populateParticipantOptions() {
     const { usedIds } = await fetchUsedParticipants();
     const used = new Set(usedIds.map(Number));
 
-    for (let id = 1; id <= 20; id += 1) {
+    for (let id = 1; id <= 30; id += 1) {
       if (used.has(id)) continue;
       const option = document.createElement("option");
       option.value = String(id);

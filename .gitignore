@@ -1,4 +1,8 @@
 data/
+server.py
+Procfile
+render.yaml
+requirements.txt
 __pycache__/
 *.pyc
 .DS_Store

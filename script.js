@@ -37,6 +37,14 @@ const ratingItems = [
   { key: "value", label: "価値", text: "このイラストには価値があると感じる" },
 ];
 
+const scaleOptions = [
+  { value: 1, label: "全くそう思わない" },
+  { value: 2, label: "あまりそう思わない" },
+  { value: 3, label: "どちらでもない" },
+  { value: 4, label: "そう思う" },
+  { value: 5, label: "強くそう思う" },
+];
+
 const creatorText = {
   human: "人間のイラストレーターが制作したイラストです",
   ai: "画像生成AIによって制作されたイラストです",
@@ -173,23 +181,28 @@ function renderRatingItems(artworkId) {
     const scale = document.createElement("div");
     scale.className = "scale";
 
-    for (let value = 1; value <= 5; value += 1) {
+    scaleOptions.forEach((option) => {
       const label = document.createElement("label");
       const input = document.createElement("input");
       input.type = "radio";
       input.name = item.key;
-      input.value = String(value);
+      input.value = String(option.value);
       input.required = true;
-      input.checked = saved[item.key] === value;
-      label.append(input, document.createTextNode(String(value)));
+      input.checked = saved[item.key] === option.value;
+
+      const number = document.createElement("span");
+      number.className = "scale-number";
+      number.textContent = String(option.value);
+
+      const text = document.createElement("span");
+      text.className = "scale-text";
+      text.textContent = option.label;
+
+      label.append(input, number, text);
       scale.appendChild(label);
-    }
+    });
 
-    const scaleLabels = document.createElement("div");
-    scaleLabels.className = "scale-labels";
-    scaleLabels.innerHTML = "<span>1 あてはまらない</span><span>5 あてはまる</span>";
-
-    wrapper.append(scale, scaleLabels);
+    wrapper.append(scale);
     ratingItemsNode.appendChild(wrapper);
   });
 }

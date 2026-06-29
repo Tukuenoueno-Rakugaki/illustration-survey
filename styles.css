@@ -253,6 +253,7 @@ h2 {
 
 .scale label {
   display: grid;
+  grid-template-rows: auto 1fr;
   place-items: center;
   min-height: 48px;
   border: 1px solid var(--line);
@@ -260,6 +261,10 @@ h2 {
   background: #fff;
   cursor: pointer;
   font-weight: 700;
+  padding: 8px 6px;
+  text-align: center;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 .scale input {
@@ -275,14 +280,16 @@ h2 {
   color: #fff;
 }
 
-.scale-labels {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  margin-top: 7px;
-  color: var(--muted);
+.scale-number {
   font-size: 0.78rem;
-  line-height: 1.4;
+  opacity: 0.7;
+}
+
+.scale-text {
+  display: grid;
+  place-items: center;
+  min-height: 2.7em;
+  font-size: 0.86rem;
 }
 
 .button-row {

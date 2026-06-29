@@ -364,6 +364,16 @@ h2 {
   text-decoration: none;
 }
 
+.admin-token-input {
+  min-height: 46px;
+  width: min(220px, 100%);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 10px 12px;
+  background: #fff;
+  color: var(--ink);
+}
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

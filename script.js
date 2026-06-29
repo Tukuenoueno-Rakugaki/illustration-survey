@@ -67,6 +67,49 @@ let participant = null;
 let currentIndex = 0;
 let responses = {};
 
+function getGoogleScriptUrl() {
+  return window.SURVEY_CONFIG?.googleScriptUrl?.trim() ?? "";
+}
+
+function callSheetApi(action, payload = {}) {
+  const endpoint = getGoogleScriptUrl();
+  if (!endpoint) {
+    return Promise.reject(new Error("保存先の設定が未完了です。config.js にGoogle Apps ScriptのURLを設定してください。"));
+  }
+
+  return new Promise((resolve, reject) => {
+    const callbackName = `surveyCallback_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+    const script = document.createElement("script");
+    const url = new URL(endpoint);
+
+    url.searchParams.set("action", action);
+    url.searchParams.set("callback", callbackName);
+    url.searchParams.set("payload", JSON.stringify(payload));
+
+    window[callbackName] = (result) => {
+      cleanup();
+      if (result?.ok) {
+        resolve(result);
+        return;
+      }
+      reject(new Error(result?.error ?? "処理に失敗しました。"));
+    };
+
+    function cleanup() {
+      delete window[callbackName];
+      script.remove();
+    }
+
+    script.onerror = () => {
+      cleanup();
+      reject(new Error("保存先に接続できませんでした。"));
+    };
+
+    script.src = url.toString();
+    document.body.appendChild(script);
+  });
+}
+
 function showScreen(name) {
   Object.values(screens).forEach((screen) => screen.classList.remove("is-active"));
   screens[name].classList.add("is-active");
@@ -77,9 +120,7 @@ function assignGroup(participantId) {
 }
 
 async function fetchUsedParticipants() {
-  const response = await fetch("./api/participants");
-  if (!response.ok) throw new Error("回答状況を取得できませんでした");
-  return response.json();
+  return callSheetApi("status");
 }
 
 async function populateParticipantOptions() {
@@ -113,16 +154,7 @@ function normalizeName(name) {
 }
 
 async function reserveParticipant(participantData) {
-  const response = await fetch("./api/start", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ participant: participantData }),
-  });
-  const payload = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new Error(payload.error ?? "開始できませんでした。");
-  }
-  return payload;
+  return callSheetApi("start", { participant: participantData });
 }
 
 function renderRatingItems(artworkId) {
@@ -230,20 +262,10 @@ function makeRows() {
 async function submitResponses() {
   nextButton.disabled = true;
   nextButton.textContent = "保存中";
-
-  const response = await fetch("./api/responses", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      participant,
-      responses: makeRows(),
-    }),
+  return callSheetApi("submit", {
+    participant,
+    responses: makeRows(),
   });
-
-  const payload = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new Error(payload.error ?? "回答を保存できませんでした");
-  }
 }
 
 startForm.addEventListener("submit", async (event) => {

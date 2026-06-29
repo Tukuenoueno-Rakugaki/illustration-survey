@@ -19,13 +19,58 @@ const summaryBody = document.querySelector("#summary-body");
 const responseBody = document.querySelector("#response-body");
 const refreshButton = document.querySelector("#refresh-button");
 const downloadButton = document.querySelector("#download-results");
+const adminTokenInput = document.querySelector("#admin-token");
 
 let currentRows = [];
 
+function getGoogleScriptUrl() {
+  return window.SURVEY_CONFIG?.googleScriptUrl?.trim() ?? "";
+}
+
+function callSheetApi(action, payload = {}) {
+  const endpoint = getGoogleScriptUrl();
+  if (!endpoint) {
+    return Promise.reject(new Error("保存先の設定が未完了です。config.js にGoogle Apps ScriptのURLを設定してください。"));
+  }
+
+  return new Promise((resolve, reject) => {
+    const callbackName = `surveyCallback_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+    const script = document.createElement("script");
+    const url = new URL(endpoint);
+
+    url.searchParams.set("action", action);
+    url.searchParams.set("callback", callbackName);
+    url.searchParams.set("payload", JSON.stringify(payload));
+
+    window[callbackName] = (result) => {
+      cleanup();
+      if (result?.ok) {
+        resolve(result);
+        return;
+      }
+      reject(new Error(result?.error ?? "処理に失敗しました。"));
+    };
+
+    function cleanup() {
+      delete window[callbackName];
+      script.remove();
+    }
+
+    script.onerror = () => {
+      cleanup();
+      reject(new Error("保存先に接続できませんでした。"));
+    };
+
+    script.src = url.toString();
+    document.body.appendChild(script);
+  });
+}
+
 async function loadResults() {
-  const response = await fetch("./api/results");
-  if (!response.ok) throw new Error("結果を取得できませんでした");
-  return response.json();
+  const payload = await callSheetApi("results", {
+    adminToken: adminTokenInput.value,
+  });
+  return payload;
 }
 
 function flattenResults(results) {
@@ -127,9 +172,15 @@ async function refresh() {
   renderResponses(currentRows);
 }
 
-refreshButton.addEventListener("click", refresh);
+refreshButton.addEventListener("click", () => {
+  refresh().catch((error) => {
+    responseBody.innerHTML = `<tr><td colspan="12">${error.message}</td></tr>`;
+  });
+});
 downloadButton.addEventListener("click", () => {
   downloadFile("illustration_survey_results.csv", toCsv(currentRows), "text/csv;charset=utf-8");
 });
 
-refresh();
+refresh().catch((error) => {
+  responseBody.innerHTML = `<tr><td colspan="12">${error.message}</td></tr>`;
+});

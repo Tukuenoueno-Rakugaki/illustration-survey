@@ -41,8 +41,8 @@ const scaleOptions = [
   { value: 1, label: "全くそう思わない" },
   { value: 2, label: "あまりそう思わない" },
   { value: 3, label: "どちらでもない" },
-  { value: 4, label: "そう思う" },
-  { value: 5, label: "強くそう思う" },
+  { value: 4, label: "ややそう思う" },
+  { value: 5, label: "とてもそう思う" },
 ];
 
 const fallbackGoogleScriptUrl =

@@ -139,12 +139,8 @@ function validateParticipant_(participant) {
 
 function getStatus_() {
   const responseRows = getRows_(SHEET_RESPONSES);
-  const startRows = getRows_(SHEET_STARTS);
   const usedIds = [...new Set(responseRows.map(row => Number(row.participantId)).filter(Boolean))].sort((a, b) => a - b);
-  const usedNames = [...new Set([
-    ...responseRows.map(row => String(row.participantName || "").trim()).filter(Boolean),
-    ...startRows.map(row => String(row.participantName || "").trim()).filter(Boolean),
-  ])];
+  const usedNames = [...new Set(responseRows.map(row => String(row.participantName || "").trim()).filter(Boolean))];
 
   return { ok: true, usedIds, usedNames };
 }

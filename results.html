@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>アンケート結果</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app results-app">
+      <header class="survey-header">
+        <div>
+          <p class="eyebrow">イラスト印象評価</p>
+          <h1>結果</h1>
+        </div>
+        <div class="button-row compact-row">
+          <a class="secondary-link" href="./index.html">回答ページ</a>
+          <button id="refresh-button" class="secondary-button" type="button">更新</button>
+          <button id="download-results" class="primary-button" type="button">CSVを保存</button>
+        </div>
+      </header>
+
+      <section class="stats-grid" aria-label="回答状況">
+        <div class="stat-panel">
+          <span>回答数</span>
+          <strong id="participant-count">0</strong>
+        </div>
+        <div class="stat-panel">
+          <span>A群</span>
+          <strong id="group-a-count">0</strong>
+        </div>
+        <div class="stat-panel">
+          <span>B群</span>
+          <strong id="group-b-count">0</strong>
+        </div>
+      </section>
+
+      <section class="panel wide-panel">
+        <h2>使用済み番号</h2>
+        <div id="used-id-list" class="id-list"></div>
+      </section>
+
+      <section class="panel wide-panel">
+        <h2>条件別平均</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>提示条件</th>
+                <th>件数</th>
+                <th>好感度</th>
+                <th>美しさ</th>
+                <th>技術的完成度</th>
+                <th>温かみ</th>
+                <th>価値</th>
+              </tr>
+            </thead>
+            <tbody id="summary-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel wide-panel">
+        <h2>回答一覧</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>番号</th>
+                <th>名前</th>
+                <th>群</th>
+                <th>順序</th>
+                <th>画像</th>
+                <th>実際</th>
+                <th>提示</th>
+                <th>好感度</th>
+                <th>美しさ</th>
+                <th>完成度</th>
+                <th>温かみ</th>
+                <th>価値</th>
+              </tr>
+            </thead>
+            <tbody id="response-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="./results.js"></script>
+  </body>
+</html>

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>アンケート</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <section id="start-screen" class="screen is-active" aria-labelledby="start-title">
+        <div class="masthead">
+          <p class="eyebrow">回答フォーム</p>
+          <h1 id="start-title">アンケート</h1>
+          <p class="lead">
+            表示される画像について、各項目に5段階で回答してください。
+          </p>
+        </div>
+
+        <form id="start-form" class="panel">
+          <label class="field">
+            <span>名前</span>
+            <input id="participant-name" name="participantName" autocomplete="name" required />
+          </label>
+
+          <label class="field">
+            <span>番号</span>
+            <select id="participant-id" name="participantId" required>
+              <option value="">番号を選択してください</option>
+            </select>
+          </label>
+
+          <p id="start-error" class="error-message" role="alert"></p>
+
+          <p class="note">
+            回答に正解・不正解はありません。各項目について、直感に近いものを選んでください。
+          </p>
+
+          <button class="primary-button" type="submit">開始</button>
+        </form>
+      </section>
+
+      <section id="survey-screen" class="screen" aria-live="polite">
+        <header class="survey-header">
+          <div>
+            <p id="progress-label" class="eyebrow">1 / 4</p>
+            <h2 id="artwork-title">イラスト1</h2>
+          </div>
+        </header>
+
+        <div class="creator-card" aria-label="制作者情報">
+          <span>制作者情報</span>
+          <strong id="creator-label">人間のイラストレーターが制作したイラストです</strong>
+        </div>
+
+        <div class="artwork-layout">
+          <figure class="artwork-frame">
+            <img id="artwork-image" alt="評価対象のイラスト" />
+            <figcaption id="image-fallback">画像ファイルを assets フォルダに配置してください</figcaption>
+          </figure>
+
+          <form id="rating-form" class="ratings-panel">
+            <div id="rating-items" class="rating-items"></div>
+            <div class="button-row">
+              <button id="back-button" class="secondary-button" type="button">戻る</button>
+              <button id="next-button" class="primary-button" type="submit">次へ</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section id="complete-screen" class="screen" aria-labelledby="complete-title">
+        <div class="panel complete-panel">
+          <p class="eyebrow">回答完了</p>
+          <h2 id="complete-title">ご協力ありがとうございました</h2>
+          <p id="complete-message" class="lead">回答を保存しました。</p>
+          <div class="button-row">
+            <button id="restart-button" class="text-button" type="button">最初から</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

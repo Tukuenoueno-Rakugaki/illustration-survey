@@ -93,7 +93,7 @@ function average(rows, key) {
 
 function renderUsedIds(usedIds) {
   usedIdList.innerHTML = "";
-  for (let id = 1; id <= 30; id += 1) {
+  for (let id = 1; id <= 20; id += 1) {
     const item = document.createElement("span");
     item.className = usedIds.includes(id) ? "id-chip is-used" : "id-chip";
     item.textContent = String(id);
